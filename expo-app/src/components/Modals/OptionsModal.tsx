@@ -66,7 +66,8 @@ const OptionsModal = <T,>({
                 color: colors.text,
                 fontSize: 44,
                 fontWeight: "bold",
-                marginBottom: 12,
+                paddingHorizontal: 16,
+                paddingVertical: 8,
               }}
             >
               {title}
@@ -83,6 +84,7 @@ const OptionsModal = <T,>({
                 />
               )}
               keyExtractor={(item) => item.id as string}
+              ItemSeparatorComponent={() => <View className=" h-2" />}
             />
           </Pressable>
         </View>
@@ -116,7 +118,7 @@ const DisplayOption = <T,>({
       }}
       style={{
         borderWidth: 2,
-        borderRadius: 20,
+        borderRadius: 16,
         paddingHorizontal: 16,
         paddingVertical: 24,
         borderColor: theColor,
@@ -127,7 +129,7 @@ const DisplayOption = <T,>({
         className=" flex-1"
         style={{
           color: isSelected ? colors.primary : colors.text,
-          fontSize: 32,
+          fontSize: 36,
           fontWeight: "semibold",
         }}
       >
@@ -139,23 +141,24 @@ const DisplayOption = <T,>({
 
 const RadioButton = ({ isSelected }: { isSelected: boolean }) => {
   const colors = useColors();
-  const size = 30;
+  const size = 36;
   return (
     <View
-      className=" justify-center items-center rounded-full"
+      className=" justify-center items-center"
       style={{
         width: size,
         height: size,
-        borderRadius: 3,
+        borderRadius: size / 2,
         borderColor: isSelected ? colors.primary : colors.border,
+        borderWidth: 2,
       }}
     >
       <View
-        className=" rounded-full"
         style={{
           width: size / 2,
           height: size / 2,
           backgroundColor: isSelected ? colors.primary : colors.transparent,
+          borderRadius: size / 4,
         }}
       />
     </View>
