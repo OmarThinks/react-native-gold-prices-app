@@ -21,7 +21,7 @@ const HomeScreen = () => {
     queryKey: ["gold-price"],
   });
 
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(true);
 
   if (status === "error") {
     return (
@@ -53,54 +53,69 @@ const HomeScreen = () => {
 
   return (
     <View
-      className=" px-2 py-4 self-stretch flex-1"
-      style={{ backgroundColor: colors.background, gap: 16 }}
+      className=" self-stretch flex-1"
+      style={{ backgroundColor: colors.background }}
     >
-      <ScrollView
-        className=" self-stretch flex-1 "
-        refreshControl={
-          <RefreshControl refreshing={isFetching} onRefresh={refetch} />
-        }
-      >
-        <View className=" self-stretch flex-1">
+      <View className=" self-stretch flex-1 px-4" style={{ paddingTop: 16 }}>
+        <View className=" self-stretch">
           <Row text1="Karat" text2="Price" isHeader />
-          <Row text1="24" text2={getPriceText({ karat: 24 })} />
-          <Row text1="23" text2={getPriceText({ karat: 23 })} />
-          <Row text1="22" text2={getPriceText({ karat: 22 })} />
-          <Row text1="21" text2={getPriceText({ karat: 21 })} />
-          <Row text1="20" text2={getPriceText({ karat: 20 })} />
-          <Row text1="19" text2={getPriceText({ karat: 19 })} />
-          <Row text1="18" text2={getPriceText({ karat: 18 })} />
-          <Row text1="17" text2={getPriceText({ karat: 17 })} />
-          <Row text1="16" text2={getPriceText({ karat: 16 })} />
-          <Row text1="15" text2={getPriceText({ karat: 15 })} />
-          <Row text1="14" text2={getPriceText({ karat: 14 })} />
-          <Row text1="13" text2={getPriceText({ karat: 13 })} />
-          <Row text1="12" text2={getPriceText({ karat: 12 })} />
-          <Row text1="11" text2={getPriceText({ karat: 11 })} />
-          <Row text1="10" text2={getPriceText({ karat: 10 })} />
-          <Row text1="9" text2={getPriceText({ karat: 9 })} />
-          <Row text1="8" text2={getPriceText({ karat: 8 })} />
-          <Row text1="7" text2={getPriceText({ karat: 7 })} />
-          <Row text1="6" text2={getPriceText({ karat: 6 })} />
-          <Row text1="5" text2={getPriceText({ karat: 5 })} />
-          <Row text1="4" text2={getPriceText({ karat: 4 })} />
-          <Row text1="3" text2={getPriceText({ karat: 3 })} />
-          <Row text1="2" text2={getPriceText({ karat: 2 })} />
-          <Row text1="1" text2={getPriceText({ karat: 1 })} />
         </View>
-      </ScrollView>
-      <TouchableOpacity
-        className=" self-stretch px-4 py-3 justify-center items-center"
-        style={{ borderColor: colors.text, borderWidth: 3, borderRadius: 16 }}
-        onPress={() => {
-          setIsModalVisible(true);
-        }}
+
+        <ScrollView
+          className=" self-stretch flex-1 "
+          refreshControl={
+            <RefreshControl refreshing={isFetching} onRefresh={refetch} />
+          }
+          contentContainerClassName=""
+        >
+          <View className=" self-stretch flex-1">
+            <Row text1="24" text2={getPriceText({ karat: 24 })} />
+            <Row text1="23" text2={getPriceText({ karat: 23 })} />
+            <Row text1="22" text2={getPriceText({ karat: 22 })} />
+            <Row text1="21" text2={getPriceText({ karat: 21 })} />
+            <Row text1="20" text2={getPriceText({ karat: 20 })} />
+            <Row text1="19" text2={getPriceText({ karat: 19 })} />
+            <Row text1="18" text2={getPriceText({ karat: 18 })} />
+            <Row text1="17" text2={getPriceText({ karat: 17 })} />
+            <Row text1="16" text2={getPriceText({ karat: 16 })} />
+            <Row text1="15" text2={getPriceText({ karat: 15 })} />
+            <Row text1="14" text2={getPriceText({ karat: 14 })} />
+            <Row text1="13" text2={getPriceText({ karat: 13 })} />
+            <Row text1="12" text2={getPriceText({ karat: 12 })} />
+            <Row text1="11" text2={getPriceText({ karat: 11 })} />
+            <Row text1="10" text2={getPriceText({ karat: 10 })} />
+            <Row text1="9" text2={getPriceText({ karat: 9 })} />
+            <Row text1="8" text2={getPriceText({ karat: 8 })} />
+            <Row text1="7" text2={getPriceText({ karat: 7 })} />
+            <Row text1="6" text2={getPriceText({ karat: 6 })} />
+            <Row text1="5" text2={getPriceText({ karat: 5 })} />
+            <Row text1="4" text2={getPriceText({ karat: 4 })} />
+            <Row text1="3" text2={getPriceText({ karat: 3 })} />
+            <Row text1="2" text2={getPriceText({ karat: 2 })} />
+            <Row text1="1" text2={getPriceText({ karat: 1 })} />
+          </View>
+        </ScrollView>
+      </View>
+      <View
+        className=" px-2 py-4 "
+        style={{ borderColor: colors.text, borderTopWidth: 3, marginTop: 16 }}
       >
-        <Text style={{ color: colors.text, fontSize: 32 }}>
-          Unit: <Text style={{ color: colors.primary }}>Oz</Text>
-        </Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          className=" self-stretch px-4 py-3 justify-center items-center"
+          style={{ borderColor: colors.text, borderWidth: 3, borderRadius: 16 }}
+          onPress={() => {
+            setIsModalVisible(true);
+          }}
+        >
+          <Text style={{ color: colors.text, fontSize: 32 }}>
+            Unit:{" "}
+            <Text style={{ color: colors.primary, fontWeight: "bold" }}>
+              Oz
+            </Text>
+          </Text>
+        </TouchableOpacity>
+      </View>
+
       <OptionsModal
         isVisible={isModalVisible}
         setIsVisible={setIsModalVisible}
@@ -140,7 +155,7 @@ const Cell = ({ isHeader, text }: { text: string; isHeader: boolean }) => {
     >
       <Text
         style={{
-          color: colors.text,
+          color: isHeader ? colors.primary : colors.text,
           fontSize: isHeader ? 36 : 24,
           fontWeight: isHeader ? 800 : 600,
         }}
