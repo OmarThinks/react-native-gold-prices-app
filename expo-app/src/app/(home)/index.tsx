@@ -1,4 +1,7 @@
+import { getGoldPriceQueryFn } from "@/api/goldApi";
+import ErrorScreen from "@/components/ErrorScreen";
 import { useColors } from "@/redux/slices/themeSlice/colorsHooks";
+import { useQuery } from "@tanstack/react-query";
 import React, { useCallback } from "react";
 import {
   ActivityIndicator,
@@ -7,9 +10,6 @@ import {
   Text,
   View,
 } from "react-native";
-import { useQuery } from "@tanstack/react-query";
-import { getGoldPriceQueryFn } from "@/api/goldApi";
-import ErrorScreen from "@/components/ErrorScreen";
 
 const HomeScreen = () => {
   const colors = useColors();
