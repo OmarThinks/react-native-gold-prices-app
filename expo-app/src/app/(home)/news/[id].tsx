@@ -226,7 +226,6 @@ const NewsDetailsScreen = () => {
             style={{
               color: colors.textSecondary,
               fontSize: 12,
-              wordWrap: "wrap",
             }}
           >
             🌐 {data.url}

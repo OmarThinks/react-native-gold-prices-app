@@ -1,13 +1,7 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-} from "react";
 import { toggleBookmark } from "@/redux/slices/bookmarks/bookmarksSlice";
-import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
+import { createContext, useCallback, useContext, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const BookmarksContext = createContext<{
   bookmarkSet: Set<number>;
@@ -16,6 +10,7 @@ const BookmarksContext = createContext<{
   bookmarkSet: new Set(),
   toggleBookmark: () => {},
 });
+``;
 
 const useBookmarksContext = () => {
   const context = useContext(BookmarksContext);

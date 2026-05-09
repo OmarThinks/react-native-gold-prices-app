@@ -1,7 +1,5 @@
 import { useColors } from "@/redux/slices/themeSlice/colorsHooks";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
-import { useNetworkState } from "expo-network";
 import { router, useRouter } from "expo-router";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
@@ -17,8 +15,6 @@ function Header({
 }) {
   const colors = useColors();
   const { canGoBack, back } = useRouter();
-
-  const { isInternetReachable, isConnected, type } = useNetworkState();
 
   // console.log(isInternetReachable, isConnected, type);
 
@@ -62,19 +58,6 @@ function Header({
           <FontAwesome6 name="gear" size={24} color={colors.text} />
         </TouchableOpacity>
       )}
-
-      <TouchableOpacity
-        className=" rounded-full self-stretch aspect-square justify-center items-center"
-        style={{
-          borderColor: isInternetReachable ? colors.primary : colors.error,
-        }}
-      >
-        <MaterialCommunityIcons
-          name={isInternetReachable ? "wifi" : "wifi-off"}
-          size={20}
-          color={isInternetReachable ? colors.primary : colors.error}
-        />
-      </TouchableOpacity>
     </View>
   );
 }
