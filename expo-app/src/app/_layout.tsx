@@ -1,5 +1,98 @@
-import { Stack } from "expo-router";
+import { useIsAppInitialized } from "@/hooks/useIsAppInitialized";
+import { useUser } from "@/redux/slices/auth/authHooks";
+import { useColors, useThemeMode } from "@/redux/slices/themeSlice/colorsHooks";
+import { store } from "@/redux/store";
+import LoginScreen from "@/screens/LoginScreen";
+import "@/utils/ReactQueryReactNativeSetup";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { NativeTabs } from "expo-router/unstable-native-tabs";
+import { StatusBar } from "expo-status-bar";
+import { ActivityIndicator, View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Provider as ReduxProvider } from "react-redux";
+import "../../global.css";
 
-export default function RootLayout() {
-  return <Stack />;
+const queryClient = new QueryClient();
+
+function RootLayout() {
+  return (
+    <ReduxProvider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <AppInsideRedux />
+      </QueryClientProvider>
+    </ReduxProvider>
+  );
 }
+
+function AppInsideRedux() {
+  const colors = useColors();
+  const themeMode = useThemeMode();
+
+  const isAppInitialized = useIsAppInitialized();
+
+  const user = useUser();
+  // console.log("Current user:", user);
+
+  if (!isAppInitialized) {
+    return (
+      <View className=" self-stretch flex-1 justify-center items-center">
+        <ActivityIndicator size="large" color={colors.primary} />
+      </View>
+    );
+  }
+
+  if (!user) {
+    return (
+      <SafeAreaView
+        style={{ backgroundColor: colors.background }}
+        className=" self-stretch flex-1 justify-center items-center px-6"
+        edges={["top", "right", "left"]}
+      >
+        <StatusBar style={themeMode === "dark" ? "light" : "dark"} />
+
+        <LoginScreen />
+      </SafeAreaView>
+    );
+  }
+
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaView
+        style={{ backgroundColor: colors.background }}
+        className=" self-stretch flex-1"
+        edges={["top", "right", "left"]}
+      >
+        <View
+          className=" self-stretch flex-1"
+          style={{ backgroundColor: colors.background }}
+        >
+          <StatusBar style={themeMode === "dark" ? "light" : "dark"} />
+
+          <NativeTabs
+            backgroundColor={colors.background}
+            indicatorColor={colors.primary}
+            labelStyle={{ selected: { color: colors.text } }}
+          >
+            <NativeTabs.Trigger name="(home)">
+              <NativeTabs.Trigger.Label>Home</NativeTabs.Trigger.Label>
+              <NativeTabs.Trigger.Icon sf="house.fill" md="home" />
+            </NativeTabs.Trigger>
+
+            <NativeTabs.Trigger name="bookmarks">
+              <NativeTabs.Trigger.Label>Bookmarks</NativeTabs.Trigger.Label>
+              <NativeTabs.Trigger.Icon sf="bookmark.fill" md="bookmark" />
+            </NativeTabs.Trigger>
+
+            <NativeTabs.Trigger name="settings">
+              <NativeTabs.Trigger.Label>Settings</NativeTabs.Trigger.Label>
+              <NativeTabs.Trigger.Icon sf="gear" md="settings" />
+            </NativeTabs.Trigger>
+          </NativeTabs>
+        </View>
+      </SafeAreaView>
+    </GestureHandlerRootView>
+  );
+}
+
+export default RootLayout;
