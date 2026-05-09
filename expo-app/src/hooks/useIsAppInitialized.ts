@@ -1,5 +1,4 @@
 import { setUser } from "@/redux/slices/auth/authSlice";
-import { setBookMarks } from "@/redux/slices/bookmarks/bookmarksSlice";
 import { setThemeMode } from "@/redux/slices/themeSlice/themeSlice";
 import { useAppDispatch } from "@/redux/store";
 import { StorageKeysEnum } from "@/storage/StorageKeysEnum";
@@ -11,34 +10,6 @@ const useIsAppInitialized = () => {
   const [isAuthInitialized, setIsAuthInitialized] = useState(true);
 
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    console.log("Initializing bookmarks...");
-    try {
-      AsyncStorage.getItem(StorageKeysEnum.BOOKMARKS)
-        .then((storedBookmarks) => {
-          if (storedBookmarks) {
-            const bookmarksArray = JSON.parse(storedBookmarks);
-            if (Array.isArray(bookmarksArray)) {
-              dispatch(setBookMarks({ bookmarks: bookmarksArray }));
-            } else {
-              console.warn(
-                "Invalid bookmarks data in storage, expected an array:",
-                storedBookmarks,
-              );
-            }
-          } else {
-            dispatch(setBookMarks({ bookmarks: [] }));
-          }
-        })
-        .catch((error) => {
-          console.error("Error initializing bookmarks:", error);
-          dispatch(setBookMarks({ bookmarks: [] }));
-        });
-    } catch (error) {
-      console.error("Error parsing bookmarks from storage:", error);
-      dispatch(setBookMarks({ bookmarks: [] }));
-    }
-  }, [dispatch]);
 
   useEffect(() => {
     const initializeAuth = () => {
