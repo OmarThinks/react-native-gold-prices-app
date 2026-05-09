@@ -1,7 +1,8 @@
 import { useColors } from "@/redux/slices/themeSlice/colorsHooks";
+import type { OptionsType, SingleOptionType } from "@/types/OptionsType";
 import React from "react";
 import {
-  Button,
+  FlatList,
   Modal,
   Pressable,
   Text,
@@ -9,8 +10,6 @@ import {
   useWindowDimensions,
   View,
 } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
-import type { OptionsType, SingleOptionType } from "@/types/OptionsType";
 
 const OptionsModal = <T,>({
   isVisible,
@@ -72,17 +71,19 @@ const OptionsModal = <T,>({
             >
               {title}
             </Text>
-            <ScrollView className=" self-stretch flex-1">
-              <View>
-                <Text style={{ color: colors.text }}>OptionsModal</Text>
-              </View>
-              <Button
-                title="Close"
-                onPress={() => {
-                  setIsVisible(false);
-                }}
-              />
-            </ScrollView>
+            <FlatList
+              data={options}
+              renderItem={({ item }) => (
+                <DisplayOption<T>
+                  option={item}
+                  selectedKey={selectedKey}
+                  setIsModalVisible={setIsVisible}
+                  setSelectedKey={setSelectedKey}
+                  key={item.id as string}
+                />
+              )}
+              keyExtractor={(item) => item.id as string}
+            />
           </Pressable>
         </View>
       </TouchableOpacity>
@@ -104,15 +105,35 @@ const DisplayOption = <T,>({
   const isSelected = selectedKey === option.id;
   const colors = useColors();
 
+  const theColor = isSelected ? colors.primary : colors.border;
+
   return (
     <TouchableOpacity
-      className=" self-stretch"
+      className=" self-stretch flex-row gap-3 items-center"
       onPress={() => {
         setSelectedKey(option.id);
         setIsModalVisible(false);
       }}
-      style={{}}
-    ></TouchableOpacity>
+      style={{
+        borderWidth: 2,
+        borderRadius: 20,
+        paddingHorizontal: 16,
+        paddingVertical: 24,
+        borderColor: theColor,
+      }}
+    >
+      <RadioButton isSelected={isSelected} />
+      <Text
+        className=" flex-1"
+        style={{
+          color: isSelected ? colors.primary : colors.text,
+          fontSize: 32,
+          fontWeight: "semibold",
+        }}
+      >
+        {option.title}
+      </Text>
+    </TouchableOpacity>
   );
 };
 
