@@ -1,9 +1,6 @@
 import { getGoldPriceQueryFn } from "@/api/goldApi";
 import ErrorScreen from "@/components/ErrorScreen";
-import {
-  WeightOptions,
-  WeightOptionsEnum,
-} from "@/components/Modals/options/WeightOptions";
+import { WeightOptions, WeightOptionsEnum } from "@/options/WeightOptions";
 import OptionsModal from "@/components/Modals/OptionsModal";
 import { Header } from "@/components/Views/Header/Header";
 import { useColors } from "@/redux/slices/themeSlice/colorsHooks";
@@ -17,12 +14,13 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { getWeightConversionFactor } from "@/utils/weightUnitsConversion";
 
 const HomeScreen = () => {
   const colors = useColors();
 
   const { data, status, error, isLoading, isFetching, refetch } = useQuery({
-    queryFn: getGoldPriceQueryFn,
+    queryFn: () => getGoldPriceQueryFn(),
     queryKey: ["gold-price"],
   });
 
@@ -49,7 +47,8 @@ const HomeScreen = () => {
     );
   }
 
-  const fullPrice = data.price;
+  const fullPrice =
+    data.price * getWeightConversionFactor({ weightType: selectedWeightKey });
 
   const getPriceText = useCallback(
     ({ karat }: { karat: number }) => {
