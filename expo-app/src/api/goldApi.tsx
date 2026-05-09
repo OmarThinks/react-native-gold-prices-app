@@ -1,3 +1,5 @@
+import { CurrencyOptionsEnum } from "@/options/CurrencyOptions";
+
 type GoldApiResponseType = {
   currency: string;
   currencySymbol: string;
@@ -9,8 +11,14 @@ type GoldApiResponseType = {
   updatedAtReadable: string;
 };
 
-const getGoldPriceQueryFn = async () => {
-  const response = await fetch("https://api.gold-api.com/price/XAU/USD");
+const getGoldPriceQueryFn = async ({
+  currencyKey,
+}: {
+  currencyKey: CurrencyOptionsEnum;
+}) => {
+  const response = await fetch(
+    `https://api.gold-api.com/price/XAU/${currencyKey}`,
+  );
   const data = (await response.json()) as GoldApiResponseType;
   return data;
 };
