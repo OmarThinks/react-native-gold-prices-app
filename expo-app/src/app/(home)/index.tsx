@@ -8,16 +8,13 @@ import OptionsModal from "@/components/Modals/OptionsModal";
 import { Header } from "@/components/Views/Header/Header";
 import { useColors } from "@/redux/slices/themeSlice/colorsHooks";
 import { useQuery } from "@tanstack/react-query";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import {
   ActivityIndicator,
-  Button,
-  Pressable,
   RefreshControl,
   ScrollView,
   Text,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   View,
 } from "react-native";
 
@@ -62,6 +59,11 @@ const HomeScreen = () => {
     },
     [data.currencySymbol, fullPrice],
   );
+
+  const weightUnitName = useMemo(() => {
+    return WeightOptions.find((item) => item.id === selectedWeightKey)
+      ?.title as string;
+  }, [selectedWeightKey]);
 
   return (
     <View
@@ -110,20 +112,48 @@ const HomeScreen = () => {
         </ScrollView>
       </View>
       <View
-        className=" px-2 py-4 "
+        className=" px-2 py-4 flex-row gap-2 self-stretch"
         style={{ borderColor: colors.text, borderTopWidth: 3, marginTop: 16 }}
       >
         <TouchableOpacity
-          className=" self-stretch px-4 py-3 justify-center items-center"
-          style={{ borderColor: colors.text, borderWidth: 3, borderRadius: 16 }}
+          className=" self-stretch px-2 py-3 justify-center items-center flex-1"
+          style={{
+            borderColor: colors.text,
+            borderWidth: 3,
+            borderRadius: 16,
+          }}
           onPress={() => {
             setIsModalVisible(true);
           }}
         >
-          <Text style={{ color: colors.text, fontSize: 32 }}>
+          <Text
+            style={{ color: colors.text, fontSize: 20 }}
+            className=" text-center"
+          >
             Unit:{" "}
             <Text style={{ color: colors.primary, fontWeight: "bold" }}>
-              Oz
+              {weightUnitName}
+            </Text>
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          className=" self-stretch px-2 py-3 justify-center items-center flex-1"
+          style={{
+            borderColor: colors.text,
+            borderWidth: 3,
+            borderRadius: 16,
+          }}
+          onPress={() => {
+            setIsModalVisible(true);
+          }}
+        >
+          <Text
+            style={{ color: colors.text, fontSize: 20 }}
+            className=" text-center"
+          >
+            Unit:{" "}
+            <Text style={{ color: colors.primary, fontWeight: "bold" }}>
+              {weightUnitName}
             </Text>
           </Text>
         </TouchableOpacity>
@@ -137,38 +167,6 @@ const HomeScreen = () => {
         selectedKey={selectedWeightKey}
         setSelectedKey={setSelectedWeightKey}
       />
-
-      <TouchableOpacity
-        className=" self-stretch px-10 py-4"
-        onPress={() => {
-          console.log("Outer Pressed");
-        }}
-        style={{ borderRadius: 16, borderColor: colors.text, borderWidth: 1 }}
-      >
-        <Pressable
-          className=" px-10 py-10 self-stretch"
-          style={{
-            borderColor: colors.text,
-            backgroundColor: colors.primary,
-            borderRadius: 16,
-            //pointerEvents: "none",
-          }}
-          onPress={() => {
-            console.log("Inner");
-          }}
-          //android_ripple={null}
-          //touchSoundDisabled
-          android_disableSound
-        >
-          <Text style={{ color: colors.text }}>Press</Text>
-          <Button
-            title="The button"
-            onPress={() => {
-              console.log("The button");
-            }}
-          />
-        </Pressable>
-      </TouchableOpacity>
     </View>
   );
 };
