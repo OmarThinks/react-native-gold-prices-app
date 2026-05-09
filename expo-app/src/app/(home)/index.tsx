@@ -15,34 +15,39 @@ import {
   View,
 } from "react-native";
 import { getWeightConversionFactor } from "@/utils/weightUnitsConversion";
-import { CurrencyOptionsEnum } from "@/options/CurrencyOptions";
+import {
+  CurrencyOptions,
+  CurrencyOptionsEnum,
+} from "@/options/CurrencyOptions";
+import { OptionsType } from "@/types/OptionsType";
 
 const HomeScreen = () => {
   const colors = useColors();
+
+  const [isWeightModalVisible, setIsWeightModalVisible] = useState(false);
+  const [selectedWeightKey, setSelectedWeightKey] = useState(
+    WeightOptionsEnum.Gram,
+  );
+
+  const [isCurrencyModalVisible, setIsCurrencyModalVisible] = useState(false);
+  const [selectedCurrencyKey, setSelectedCurrencyKey] = useState(
+    CurrencyOptionsEnum.USD,
+  );
 
   const { data, status, error, isLoading, isFetching, refetch } = useQuery({
     queryFn: () => getGoldPriceQueryFn(),
     queryKey: ["gold-price"],
   });
 
-  const [isWeightModalVisible, setIsWeightModalVisible] = useState(false);
-
-  const [selectedWeightKey, setSelectedWeightKey] = useState(
-    WeightOptionsEnum.Gram,
-  );
-  const [selectedCurrencyKey, setSelectedCurrencyKey] = useState(
-    CurrencyOptionsEnum.USD,
-  );
-
   const fullPrice =
-    data?.price ??
-    0 * getWeightConversionFactor({ weightType: selectedWeightKey });
+    (data?.price ?? 0) *
+    getWeightConversionFactor({ weightType: selectedWeightKey });
 
   const getPriceText = useCallback(
     ({ karat }: { karat: number }) => {
       return (
-        data?.currencySymbol ??
-        "" + ((fullPrice * karat) / 24).toFixed(2).toString()
+        (data?.currencySymbol ?? "") +
+        ((fullPrice * karat) / 24).toFixed(2).toString()
       );
     },
     [data?.currencySymbol, fullPrice],
@@ -52,6 +57,11 @@ const HomeScreen = () => {
     return WeightOptions.find((item) => item.id === selectedWeightKey)
       ?.title as string;
   }, [selectedWeightKey]);
+
+  const currencyName = useMemo(() => {
+    return CurrencyOptions.find((item) => item.id === selectedCurrencyKey)
+      ?.title as string;
+  }, [selectedCurrencyKey]);
 
   if (status === "error") {
     return (
@@ -120,7 +130,21 @@ const HomeScreen = () => {
         className=" px-2 py-4 flex-row gap-2 self-stretch"
         style={{ borderColor: colors.text, borderTopWidth: 3, marginTop: 16 }}
       >
-        <TouchableOpacity
+        <ModalButtonAndOptions
+          displayName={weightUnitName}
+          options={WeightOptions}
+          selectedKey={selectedWeightKey}
+          setSelectedKey={setSelectedWeightKey}
+          title={"Weight Unit"}
+        />
+        <ModalButtonAndOptions
+          displayName={currencyName}
+          options={CurrencyOptions}
+          selectedKey={selectedCurrencyKey}
+          setSelectedKey={setSelectedCurrencyKey}
+          title={"Currency"}
+        />
+        {/*<TouchableOpacity
           className=" self-stretch px-2 py-3 justify-center items-center flex-1"
           style={{
             borderColor: colors.text,
@@ -161,7 +185,7 @@ const HomeScreen = () => {
               {weightUnitName}
             </Text>
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity>*/}
       </View>
 
       <OptionsModal
@@ -173,6 +197,58 @@ const HomeScreen = () => {
         setSelectedKey={setSelectedWeightKey}
       />
     </View>
+  );
+};
+
+const ModalButtonAndOptions = <T,>({
+  selectedKey,
+  setSelectedKey,
+  options,
+  title,
+  displayName,
+}: {
+  selectedKey: T;
+  setSelectedKey: (key: T) => void;
+  options: OptionsType<T>;
+  title: string;
+  displayName: string;
+}) => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const colors = useColors();
+
+  return (
+    <>
+      <TouchableOpacity
+        className=" self-stretch px-2 py-3 justify-center items-center flex-1"
+        style={{
+          borderColor: colors.text,
+          borderWidth: 3,
+          borderRadius: 16,
+        }}
+        onPress={() => {
+          setIsModalVisible(true);
+        }}
+      >
+        <Text
+          style={{ color: colors.text, fontSize: 20 }}
+          className=" text-center"
+        >
+          {title}:{" "}
+          <Text style={{ color: colors.primary, fontWeight: "bold" }}>
+            {displayName}
+          </Text>
+        </Text>
+      </TouchableOpacity>
+      <OptionsModal
+        isVisible={isModalVisible}
+        setIsVisible={setIsModalVisible}
+        title={title}
+        options={options}
+        selectedKey={selectedKey}
+        setSelectedKey={setSelectedKey}
+      />
+    </>
   );
 };
 
