@@ -27,24 +27,10 @@ const LoginScreen = () => {
       {/* Header Section */}
       <View className="mb-12 items-center">
         <Text className="text-4xl font-bold" style={{ color: colors.primary }}>
-          Tech News
+          Gold Prices
         </Text>
         <Text className="mt-2 text-lg" style={{ color: colors.text }}>
-          Stay informed, stay ahead
-        </Text>
-      </View>
-
-      {/* Description Section */}
-      <View
-        className="mb-16 rounded-lg p-6"
-        style={{ backgroundColor: colors.surface, borderColor: colors.border }}
-      >
-        <Text
-          className="text-center text-base leading-6"
-          style={{ color: colors.text }}
-        >
-          Welcome to your personalized news experience. Get access to trending
-          stories, breaking news, and topics that matter to you.
+          Get live gold prices
         </Text>
       </View>
 
