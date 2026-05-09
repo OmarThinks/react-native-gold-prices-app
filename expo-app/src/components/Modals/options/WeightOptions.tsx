@@ -8,7 +8,7 @@ enum WeightOptionsEnum {
   Milligram = "mg",
 }
 
-const WeightOptions: OptionsType = [
+const WeightOptions: OptionsType<WeightOptionsEnum> = [
   { id: WeightOptionsEnum.Gram, title: "Gram (g)" },
   { id: WeightOptionsEnum.Oz, title: "Oz" },
   { id: WeightOptionsEnum.Pound, title: "Pound (lb)" },

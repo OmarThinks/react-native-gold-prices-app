@@ -9,6 +9,7 @@ const lightColors: ThemeColorsType = {
   textSecondary: "#404040",
   border: "#E4E4E7",
   error: "#EF4444",
+  transparent: "transparent",
 };
 
 export default lightColors;

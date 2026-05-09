@@ -1,3 +1,5 @@
-type OptionsType = { id: string; title: string }[];
+type SingleOptionType<T> = { id: T; title: string };
 
-export type { OptionsType };
+type OptionsType<T> = SingleOptionType<T>[];
+
+export type { OptionsType, SingleOptionType };

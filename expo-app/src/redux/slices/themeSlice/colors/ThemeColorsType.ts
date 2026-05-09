@@ -7,6 +7,7 @@ type ThemeColorsType = {
   textSecondary: string;
   border: string;
   error: string;
+  transparent: string;
 };
 
 export type { ThemeColorsType };

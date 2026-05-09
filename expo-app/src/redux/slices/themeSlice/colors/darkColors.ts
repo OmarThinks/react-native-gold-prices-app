@@ -9,6 +9,7 @@ const darkColors: ThemeColorsType = {
   textSecondary: "#F0F0F0",
   border: "#27272A",
   error: "#F87171",
+  transparent: "transparent",
 };
 
 export default darkColors;

@@ -10,18 +10,20 @@ import {
   View,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import type { OptionsType } from "@/types/OptionsType";
+import type { OptionsType, SingleOptionType } from "@/types/OptionsType";
 
 const OptionsModal = <T,>({
   isVisible,
   setIsVisible,
   title,
   options,
+  selectedKey,
+  setSelectedKey,
 }: {
   isVisible: boolean;
   setIsVisible: (newValue: boolean) => void;
   title: string;
-  options: OptionsType;
+  options: OptionsType<T>;
   selectedKey: T;
   setSelectedKey: (newKey: T) => void;
 }) => {
@@ -85,6 +87,57 @@ const OptionsModal = <T,>({
         </View>
       </TouchableOpacity>
     </Modal>
+  );
+};
+
+const DisplayOption = <T,>({
+  option,
+  selectedKey,
+  setIsModalVisible,
+  setSelectedKey,
+}: {
+  selectedKey: T;
+  setSelectedKey: (newKey: T) => void;
+  setIsModalVisible: (newValue: boolean) => void;
+  option: SingleOptionType<T>;
+}) => {
+  const isSelected = selectedKey === option.id;
+  const colors = useColors();
+
+  return (
+    <TouchableOpacity
+      className=" self-stretch"
+      onPress={() => {
+        setSelectedKey(option.id);
+        setIsModalVisible(false);
+      }}
+      style={{}}
+    ></TouchableOpacity>
+  );
+};
+
+const RadioButton = ({ isSelected }: { isSelected: boolean }) => {
+  const colors = useColors();
+  const size = 30;
+  return (
+    <View
+      className=" justify-center items-center rounded-full"
+      style={{
+        width: size,
+        height: size,
+        borderRadius: 3,
+        borderColor: isSelected ? colors.primary : colors.border,
+      }}
+    >
+      <View
+        className=" rounded-full"
+        style={{
+          width: size / 2,
+          height: size / 2,
+          backgroundColor: isSelected ? colors.primary : colors.transparent,
+        }}
+      />
+    </View>
   );
 };
 
