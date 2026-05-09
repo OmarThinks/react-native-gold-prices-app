@@ -4,7 +4,7 @@ export default function HomeLayout() {
   return (
     <Stack>
       <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="news/[id]" options={{ headerShown: false }} />
+      <Stack.Screen name="chart" options={{ headerShown: false }} />
     </Stack>
   );
 }

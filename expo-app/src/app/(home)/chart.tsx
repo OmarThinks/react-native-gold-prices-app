@@ -2,7 +2,7 @@ import { useColors } from "@/redux/slices/themeSlice/colorsHooks";
 import React from "react";
 import { Text, View } from "react-native";
 
-const HomeScreen = () => {
+const Chart = () => {
   const colors = useColors();
 
   return (
@@ -10,9 +10,9 @@ const HomeScreen = () => {
       className=" self-stretch flex-1 justify-center items-center"
       style={{ backgroundColor: colors.background }}
     >
-      <Text style={{ color: colors.text }}>HomeScreen</Text>
+      <Text style={{ color: colors.text }}>Chart</Text>
     </View>
   );
 };
 
-export default HomeScreen;
+export default Chart;
