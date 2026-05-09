@@ -1,5 +1,9 @@
 import { getGoldPriceQueryFn } from "@/api/goldApi";
 import ErrorScreen from "@/components/ErrorScreen";
+import {
+  WeightOptions,
+  WeightOptionsEnum,
+} from "@/components/Modals/options/WeightOptions";
 import OptionsModal from "@/components/Modals/OptionsModal";
 import { Header } from "@/components/Views/Header/Header";
 import { useColors } from "@/redux/slices/themeSlice/colorsHooks";
@@ -26,6 +30,10 @@ const HomeScreen = () => {
   });
 
   const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const [selectedWeightKey, setSelectedWeightKey] = useState(
+    WeightOptionsEnum.Gram,
+  );
 
   if (status === "error") {
     return (
@@ -124,6 +132,10 @@ const HomeScreen = () => {
       <OptionsModal
         isVisible={isModalVisible}
         setIsVisible={setIsModalVisible}
+        title={"Weight Unit"}
+        options={WeightOptions}
+        selectedKey={selectedWeightKey}
+        setSelectedKey={setSelectedWeightKey}
       />
 
       <TouchableOpacity

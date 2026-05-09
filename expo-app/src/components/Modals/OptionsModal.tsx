@@ -1,81 +1,34 @@
-import { View, Text, Modal, Button, TouchableOpacity } from "react-native";
-import React from "react";
 import { useColors } from "@/redux/slices/themeSlice/colorsHooks";
+import React from "react";
+import {
+  Button,
+  Modal,
+  Pressable,
+  Text,
+  TouchableOpacity,
+  useWindowDimensions,
+  View,
+} from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
+import type { OptionsType } from "@/types/OptionsType";
 
-const OptionsModal1 = ({
+const OptionsModal = <T,>({
   isVisible,
   setIsVisible,
+  title,
+  options,
 }: {
   isVisible: boolean;
   setIsVisible: (newValue: boolean) => void;
+  title: string;
+  options: OptionsType;
+  selectedKey: T;
+  setSelectedKey: (newKey: T) => void;
 }) => {
   const colors = useColors();
-  return (
-    <Modal
-      visible={isVisible}
-      style={{ backgroundColor: colors.background }}
-      transparent
-      /*onDismiss={() => {
-        setIsVisible(false);
-      }}*/
-    >
-      <View
-        className=" justify-center items-center flex-1 self-stretch  "
-        //style={{ width: 300, height: 300 }}
-        style={{ backgroundColor: colors.background + "99" }}
-      >
-        <TouchableOpacity
-          className=" self-stretch flex-1 absolute w-full h-full"
-          style={{ zIndex: 1 }}
-          onPress={() => {
-            setIsVisible(false);
-            console.log("Modal dismissed");
-          }}
-        />
-        <TouchableOpacity
-          //pointerEvents="none"
-          className=" absolute"
-          style={{
-            zIndex: 3,
-            pointerEvents: "none",
-            backgroundColor: colors.background,
-            position: "absolute",
-          }}
-          disabled
-          onPress={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            console.log("stopped propagation");
-          }}
-        >
-          <View className=" self-stretch flex-1">
-            <Text style={{ color: colors.text }} className=" text-[48px] p-12">
-              Yo
-            </Text>
-            <View>
-              <Text style={{ color: colors.text }}>OptionsModal</Text>
-            </View>
-            <Button
-              title="Close"
-              onPress={() => {
-                setIsVisible(false);
-              }}
-            />
-          </View>
-        </TouchableOpacity>
-      </View>
-    </Modal>
-  );
-};
 
-const OptionsModal = ({
-  isVisible,
-  setIsVisible,
-}: {
-  isVisible: boolean;
-  setIsVisible: (newValue: boolean) => void;
-}) => {
-  const colors = useColors();
+  const { height: screenHeight } = useWindowDimensions();
+
   return (
     <Modal
       visible={isVisible}
@@ -86,42 +39,50 @@ const OptionsModal = ({
       }}*/
     >
       <TouchableOpacity
-        className=" justify-center items-center flex-1 self-stretch  "
-        //style={{ width: 300, height: 300 }}
-        style={{ backgroundColor: colors.background + "99" }}
+        className=" justify-center items-center flex-1 self-stretch px-4  py-24"
+        style={{ backgroundColor: colors.border + "99" }}
         onPress={() => {
-          console.log("Outer");
+          setIsVisible(false);
         }}
       >
-        <TouchableOpacity
-          //pointerEvents="none"
-          style={{
-            //pointerEvents: "none",
-            backgroundColor: colors.background,
-            //position: "absolute",
-            width: "70%",
-            height: "50%",
-          }}
-          //disabled
-          onPress={(e) => {
-            console.log("Inner");
-          }}
+        <View
+          className=" self-stretch flex-1"
+          style={{ maxHeight: screenHeight * 0.8 }}
         >
-          <View className=" self-stretch flex-1">
-            <Text style={{ color: colors.text }} className=" text-[48px] p-12">
-              Yo
-            </Text>
-            <View>
-              <Text style={{ color: colors.text }}>OptionsModal</Text>
-            </View>
-            <Button
-              title="Close"
-              onPress={() => {
-                setIsVisible(false);
+          <Pressable
+            style={{
+              backgroundColor: colors.background,
+              borderRadius: 16,
+              borderWidth: 2,
+              borderColor: colors.border,
+              flex: 1,
+            }}
+            className=" self-stretch"
+            android_disableSound
+          >
+            <Text
+              style={{
+                color: colors.text,
+                fontSize: 44,
+                fontWeight: "bold",
+                marginBottom: 12,
               }}
-            />
-          </View>
-        </TouchableOpacity>
+            >
+              {title}
+            </Text>
+            <ScrollView className=" self-stretch flex-1">
+              <View>
+                <Text style={{ color: colors.text }}>OptionsModal</Text>
+              </View>
+              <Button
+                title="Close"
+                onPress={() => {
+                  setIsVisible(false);
+                }}
+              />
+            </ScrollView>
+          </Pressable>
+        </View>
       </TouchableOpacity>
     </Modal>
   );
