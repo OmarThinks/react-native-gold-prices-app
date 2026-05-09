@@ -15,6 +15,7 @@ import {
   View,
 } from "react-native";
 import { getWeightConversionFactor } from "@/utils/weightUnitsConversion";
+import { CurrencyOptionsEnum } from "@/options/CurrencyOptions";
 
 const HomeScreen = () => {
   const colors = useColors();
@@ -24,11 +25,33 @@ const HomeScreen = () => {
     queryKey: ["gold-price"],
   });
 
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isWeightModalVisible, setIsWeightModalVisible] = useState(false);
 
   const [selectedWeightKey, setSelectedWeightKey] = useState(
     WeightOptionsEnum.Gram,
   );
+  const [selectedCurrencyKey, setSelectedCurrencyKey] = useState(
+    CurrencyOptionsEnum.USD,
+  );
+
+  const fullPrice =
+    data?.price ??
+    0 * getWeightConversionFactor({ weightType: selectedWeightKey });
+
+  const getPriceText = useCallback(
+    ({ karat }: { karat: number }) => {
+      return (
+        data?.currencySymbol ??
+        "" + ((fullPrice * karat) / 24).toFixed(2).toString()
+      );
+    },
+    [data?.currencySymbol, fullPrice],
+  );
+
+  const weightUnitName = useMemo(() => {
+    return WeightOptions.find((item) => item.id === selectedWeightKey)
+      ?.title as string;
+  }, [selectedWeightKey]);
 
   if (status === "error") {
     return (
@@ -46,23 +69,6 @@ const HomeScreen = () => {
       </View>
     );
   }
-
-  const fullPrice =
-    data.price * getWeightConversionFactor({ weightType: selectedWeightKey });
-
-  const getPriceText = useCallback(
-    ({ karat }: { karat: number }) => {
-      return (
-        data.currencySymbol + ((fullPrice * karat) / 24).toFixed(2).toString()
-      );
-    },
-    [data.currencySymbol, fullPrice],
-  );
-
-  const weightUnitName = useMemo(() => {
-    return WeightOptions.find((item) => item.id === selectedWeightKey)
-      ?.title as string;
-  }, [selectedWeightKey]);
 
   return (
     <View
@@ -122,7 +128,7 @@ const HomeScreen = () => {
             borderRadius: 16,
           }}
           onPress={() => {
-            setIsModalVisible(true);
+            setIsWeightModalVisible(true);
           }}
         >
           <Text
@@ -143,7 +149,7 @@ const HomeScreen = () => {
             borderRadius: 16,
           }}
           onPress={() => {
-            setIsModalVisible(true);
+            setIsWeightModalVisible(true);
           }}
         >
           <Text
@@ -159,8 +165,8 @@ const HomeScreen = () => {
       </View>
 
       <OptionsModal
-        isVisible={isModalVisible}
-        setIsVisible={setIsModalVisible}
+        isVisible={isWeightModalVisible}
+        setIsVisible={setIsWeightModalVisible}
         title={"Weight Unit"}
         options={WeightOptions}
         selectedKey={selectedWeightKey}

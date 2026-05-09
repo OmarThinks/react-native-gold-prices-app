@@ -25,7 +25,7 @@ const getWeightConversionFactor = ({
       return 1 / 28349.5;
 
     default:
-      return 0;
+      throw new Error("Unrecognized Handler");
   }
 };
 
