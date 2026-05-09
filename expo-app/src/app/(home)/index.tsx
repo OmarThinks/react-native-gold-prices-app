@@ -1,15 +1,19 @@
 import { getGoldPriceQueryFn } from "@/api/goldApi";
 import ErrorScreen from "@/components/ErrorScreen";
 import OptionsModal from "@/components/Modals/OptionsModal";
+import { Header } from "@/components/Views/Header/Header";
 import { useColors } from "@/redux/slices/themeSlice/colorsHooks";
 import { useQuery } from "@tanstack/react-query";
 import React, { useCallback, useState } from "react";
 import {
   ActivityIndicator,
+  Button,
+  Pressable,
   RefreshControl,
   ScrollView,
   Text,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from "react-native";
 
@@ -21,7 +25,7 @@ const HomeScreen = () => {
     queryKey: ["gold-price"],
   });
 
-  const [isModalVisible, setIsModalVisible] = useState(true);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   if (status === "error") {
     return (
@@ -56,6 +60,7 @@ const HomeScreen = () => {
       className=" self-stretch flex-1"
       style={{ backgroundColor: colors.background }}
     >
+      <Header title="Gold Price" />
       <View className=" self-stretch flex-1 px-4" style={{ paddingTop: 16 }}>
         <View className=" self-stretch">
           <Row text1="Karat" text2="Price" isHeader />
@@ -120,6 +125,38 @@ const HomeScreen = () => {
         isVisible={isModalVisible}
         setIsVisible={setIsModalVisible}
       />
+
+      <TouchableOpacity
+        className=" self-stretch px-10 py-4"
+        onPress={() => {
+          console.log("Outer Pressed");
+        }}
+        style={{ borderRadius: 16, borderColor: colors.text, borderWidth: 1 }}
+      >
+        <Pressable
+          className=" px-10 py-10 self-stretch"
+          style={{
+            borderColor: colors.text,
+            backgroundColor: colors.primary,
+            borderRadius: 16,
+            //pointerEvents: "none",
+          }}
+          onPress={() => {
+            console.log("Inner");
+          }}
+          //android_ripple={null}
+          //touchSoundDisabled
+          android_disableSound
+        >
+          <Text style={{ color: colors.text }}>Press</Text>
+          <Button
+            title="The button"
+            onPress={() => {
+              console.log("The button");
+            }}
+          />
+        </Pressable>
+      </TouchableOpacity>
     </View>
   );
 };
