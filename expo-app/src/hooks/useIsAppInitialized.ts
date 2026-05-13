@@ -26,8 +26,6 @@ const useIsAppInitialized = () => {
     ])
       .then((keyValuePair) => {
         for (const [key, value] of keyValuePair) {
-          console.log(key, value);
-
           switch (key) {
             case StorageKeysEnum.THEME_MODE:
               dispatch(setThemeMode({ mode: getThemeMode(value) }));

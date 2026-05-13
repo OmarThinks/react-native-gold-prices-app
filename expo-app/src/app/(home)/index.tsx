@@ -1,9 +1,17 @@
 import { getGoldPriceQueryFn } from "@/api/goldApi";
 import ErrorScreen from "@/components/ErrorScreen";
-import { WeightOptions, WeightOptionsEnum } from "@/options/WeightOptions";
+import ModalButtonAndOptions from "@/components/Modals/ModalButtonAndOptions";
 import OptionsModal from "@/components/Modals/OptionsModal";
 import { Header } from "@/components/Views/Header/Header";
+import { CurrencyOptions } from "@/options/CurrencyOptions";
+import { WeightOptions } from "@/options/WeightOptions";
+import {
+  useSelectedCurrencyKey,
+  useSelectedWeightKey,
+} from "@/redux/slices/goldSelectionsSlice/goldSelectionHooks";
 import { useColors } from "@/redux/slices/themeSlice/colorsHooks";
+import { OptionsType } from "@/types/OptionsType";
+import { getWeightConversionFactor } from "@/utils/weightUnitsConversion";
 import { useQuery } from "@tanstack/react-query";
 import React, { useCallback, useMemo, useState } from "react";
 import {
@@ -13,17 +21,8 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ViewStyle,
 } from "react-native";
-import { getWeightConversionFactor } from "@/utils/weightUnitsConversion";
-import {
-  CurrencyOptions,
-  CurrencyOptionsEnum,
-} from "@/options/CurrencyOptions";
-import { OptionsType } from "@/types/OptionsType";
-import {
-  useSelectedCurrencyKey,
-  useSelectedWeightKey,
-} from "@/redux/slices/goldSelectionsSlice/goldSelectionHooks";
 
 const HomeScreen = () => {
   const colors = useColors();
@@ -143,58 +142,6 @@ const HomeScreen = () => {
         />
       </View>
     </View>
-  );
-};
-
-const ModalButtonAndOptions = <T,>({
-  selectedKey,
-  setSelectedKey,
-  options,
-  title,
-  displayName,
-}: {
-  selectedKey: T;
-  setSelectedKey: (key: T) => void;
-  options: OptionsType<T>;
-  title: string;
-  displayName: string;
-}) => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const colors = useColors();
-
-  return (
-    <>
-      <TouchableOpacity
-        className=" self-stretch px-2 py-3 justify-center items-center flex-1"
-        style={{
-          borderColor: colors.text,
-          borderWidth: 3,
-          borderRadius: 16,
-        }}
-        onPress={() => {
-          setIsModalVisible(true);
-        }}
-      >
-        <Text
-          style={{ color: colors.text, fontSize: 20 }}
-          className=" text-center"
-        >
-          {title}:{" "}
-          <Text style={{ color: colors.primary, fontWeight: "bold" }}>
-            {displayName}
-          </Text>
-        </Text>
-      </TouchableOpacity>
-      <OptionsModal
-        isVisible={isModalVisible}
-        setIsVisible={setIsModalVisible}
-        title={title}
-        options={options}
-        selectedKey={selectedKey}
-        setSelectedKey={setSelectedKey}
-      />
-    </>
   );
 };
 
