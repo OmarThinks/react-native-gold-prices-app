@@ -7,12 +7,21 @@ import "@/utils/ReactQueryReactNativeSetup";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { NativeTabs } from "expo-router/unstable-native-tabs";
 import { StatusBar } from "expo-status-bar";
-import { ActivityIndicator, View } from "react-native";
+import { ActivityIndicator, Platform, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Provider as ReduxProvider } from "react-redux";
 import "../../global.css";
+import "../utils/initialize/initializeGoogleAds";
+import {
+  BannerAd,
+  BannerAdSize,
+  TestIds,
+  useForeground,
+} from "react-native-google-mobile-ads";
+import { useRef } from "react";
 
+const adUnitId = TestIds.ADAPTIVE_BANNER;
 const queryClient = new QueryClient();
 
 function RootLayout() {
@@ -33,6 +42,12 @@ function AppInsideRedux() {
 
   const user = useUser();
   // console.log("Current user:", user);
+
+  const bannerRef = useRef<BannerAd>(null);
+
+  useForeground(() => {
+    Platform.OS === "ios" && bannerRef.current?.load();
+  });
 
   if (!isAppInitialized) {
     return (
@@ -90,6 +105,11 @@ function AppInsideRedux() {
             </NativeTabs.Trigger>
           </NativeTabs>
         </View>
+        <BannerAd
+          ref={bannerRef}
+          unitId={adUnitId}
+          size={BannerAdSize.LARGE_ANCHORED_ADAPTIVE_BANNER}
+        />
       </SafeAreaView>
     </GestureHandlerRootView>
   );
