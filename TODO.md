@@ -2,8 +2,8 @@
 
 # Todo
 
-- Put currency in redux
-- Put Weight weight unit in redux
+- Put currency in redux ✅
+- Put Weight weight unit in redux ✅
 - initialize currency on app open
 - initialize weight unit on app open
 - Add calculator

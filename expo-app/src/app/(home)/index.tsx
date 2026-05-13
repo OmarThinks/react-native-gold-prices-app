@@ -20,17 +20,17 @@ import {
   CurrencyOptionsEnum,
 } from "@/options/CurrencyOptions";
 import { OptionsType } from "@/types/OptionsType";
+import {
+  useSelectedCurrencyKey,
+  useSelectedWeightKey,
+} from "@/redux/slices/goldSelectionsSlice/goldSelectionHooks";
 
 const HomeScreen = () => {
   const colors = useColors();
 
-  const [selectedWeightKey, setSelectedWeightKey] = useState(
-    WeightOptionsEnum.Gram,
-  );
-
-  const [selectedCurrencyKey, setSelectedCurrencyKey] = useState(
-    CurrencyOptionsEnum.USD,
-  );
+  const { selectedCurrencyKey, setSelectedCurrencyKey } =
+    useSelectedCurrencyKey();
+  const { selectedWeightKey, setSelectedWeightKey } = useSelectedWeightKey();
 
   const { data, status, error, isLoading, isFetching, refetch } = useQuery({
     queryFn: () => getGoldPriceQueryFn({ currencyKey: selectedCurrencyKey }),

@@ -1,11 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authSlice from "./slices/auth/authSlice";
+import goldSelectionSlice from "./slices/goldSelectionsSlice/goldSelectionsSlice";
 import themeSlice from "./slices/themeSlice/themeSlice";
+import { useSelector } from "react-redux";
 
 const store = configureStore({
   reducer: {
-    [themeSlice.name]: themeSlice.reducer,
     [authSlice.name]: authSlice.reducer,
+    [themeSlice.name]: themeSlice.reducer,
+    [goldSelectionSlice.name]: goldSelectionSlice.reducer,
   },
 });
 

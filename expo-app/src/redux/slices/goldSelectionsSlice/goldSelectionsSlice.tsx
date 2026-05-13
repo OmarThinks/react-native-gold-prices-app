@@ -21,7 +21,7 @@ const goldSelectionSlice = createSlice({
     setCurrency: (
       state,
       action: PayloadAction<{
-        newSelectedCurrencyKey: CurrencyOptionsEnum.USD;
+        newSelectedCurrencyKey: CurrencyOptionsEnum;
       }>,
     ) => {
       state.currency = action.payload.newSelectedCurrencyKey;
@@ -32,7 +32,7 @@ const goldSelectionSlice = createSlice({
     },
     setWeightUnit: (
       state,
-      action: PayloadAction<{ newSelectedWeightKey: WeightOptionsEnum.Gram }>,
+      action: PayloadAction<{ newSelectedWeightKey: WeightOptionsEnum }>,
     ) => {
       state.weightUnit = action.payload.newSelectedWeightKey;
       AsyncStorage.setItem(
