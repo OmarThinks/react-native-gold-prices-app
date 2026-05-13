@@ -7,7 +7,7 @@ const darkColors: ThemeColorsType = {
   surface: "#18181B",
   text: "#FFFFFF",
   textSecondary: "#F0F0F0",
-  border: "#27272A",
+  border: "#575757",
   error: "#F87171",
   transparent: "transparent",
 };

@@ -12,7 +12,7 @@ import { useColors } from "@/redux/slices/themeSlice/colorsHooks";
 import { getWeightConversionFactor } from "@/utils/weightUnitsConversion";
 import { useQuery } from "@tanstack/react-query";
 import React, { useCallback, useMemo, useState } from "react";
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, TextInput, View } from "react-native";
 import { RefreshControl } from "react-native-gesture-handler";
 
 const Upgrade = () => {
@@ -22,6 +22,7 @@ const Upgrade = () => {
     useSelectedCurrencyKey();
   const { selectedWeightKey, setSelectedWeightKey } = useSelectedWeightKey();
   const [selectedKarat, setSelectedKarat] = useState(KaratOptionsEnum.K_24);
+  const [amount, setAmount] = useState("1");
 
   const { data, status, error, isLoading, isFetching, refetch } = useQuery({
     queryFn: () => getGoldPriceQueryFn({ currencyKey: selectedCurrencyKey }),
@@ -32,11 +33,19 @@ const Upgrade = () => {
     (data?.price ?? 0) *
     getWeightConversionFactor({ weightType: selectedWeightKey });
 
+  const multiplier: number = useMemo(() => {
+    try {
+      return Number(amount);
+    } catch (error) {
+      return 1;
+    }
+  }, [amount]);
+
   const getPriceText = useCallback(
-    ({ karat }: { karat: number }) => {
+    ({ karat, multiplier = 1 }: { karat: number; multiplier?: number }) => {
       return (
         (data?.currencySymbol ?? "") +
-        ((fullPrice * karat) / 24).toFixed(2).toString()
+        ((fullPrice * karat * multiplier) / 24).toFixed(2).toString()
       );
     },
     [data?.currencySymbol, fullPrice],
@@ -79,6 +88,22 @@ const Upgrade = () => {
         </Text>
         <View className=" h-4" />
         <View className=" self-stretch gap-4">
+          <TextInput
+            defaultValue={amount}
+            onChangeText={setAmount}
+            style={{
+              alignSelf: "stretch",
+              borderRadius: 16,
+              borderWidth: 1,
+              borderColor: colors.border,
+              color: colors.text,
+              fontSize: 32,
+              paddingHorizontal: 16,
+            }}
+            keyboardType="numeric"
+            placeholder="Amount"
+            placeholderTextColor={colors.border}
+          />
           <ModalButtonAndOptions
             displayName={weightUnitName}
             options={WeightOptions}
@@ -110,7 +135,7 @@ const Upgrade = () => {
           className=" self-stretch text-center p-4"
           style={{ color: colors.text, fontSize: 40 }}
         >
-          Price: {getPriceText({ karat: parseInt(selectedKarat) })}
+          Price: {getPriceText({ karat: parseInt(selectedKarat), multiplier })}
         </Text>
       </View>
     </View>
