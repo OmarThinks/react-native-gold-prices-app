@@ -1,3 +1,4 @@
+import BannerAd from "@/components/Views/ads/BannerAd";
 import { Header } from "@/components/Views/Header/Header";
 import { setUser } from "@/redux/slices/auth/authSlice";
 import { useColors, useThemeMode } from "@/redux/slices/themeSlice/colorsHooks";
@@ -60,6 +61,7 @@ const Settings = () => {
           </TouchableOpacity>
         </View>
       </View>
+      <BannerAd />
     </View>
   );
 };

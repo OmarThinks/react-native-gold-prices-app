@@ -19,9 +19,7 @@ import {
   TestIds,
   useForeground,
 } from "react-native-google-mobile-ads";
-import { useRef } from "react";
 
-const adUnitId = TestIds.ADAPTIVE_BANNER;
 const queryClient = new QueryClient();
 
 function RootLayout() {
@@ -42,12 +40,6 @@ function AppInsideRedux() {
 
   const user = useUser();
   // console.log("Current user:", user);
-
-  const bannerRef = useRef<BannerAd>(null);
-
-  useForeground(() => {
-    Platform.OS === "ios" && bannerRef.current?.load();
-  });
 
   if (!isAppInitialized) {
     return (
@@ -105,11 +97,6 @@ function AppInsideRedux() {
             </NativeTabs.Trigger>
           </NativeTabs>
         </View>
-        <BannerAd
-          ref={bannerRef}
-          unitId={adUnitId}
-          size={BannerAdSize.LARGE_ANCHORED_ADAPTIVE_BANNER}
-        />
       </SafeAreaView>
     </GestureHandlerRootView>
   );

@@ -2,6 +2,7 @@ import { getGoldPriceQueryFn } from "@/api/goldApi";
 import ErrorScreen from "@/components/ErrorScreen";
 import ModalButtonAndOptions from "@/components/Modals/ModalButtonAndOptions";
 import OptionsModal from "@/components/Modals/OptionsModal";
+import BannerAd from "@/components/Views/ads/BannerAd";
 import { Header } from "@/components/Views/Header/Header";
 import { CurrencyOptions } from "@/options/CurrencyOptions";
 import { WeightOptions } from "@/options/WeightOptions";
@@ -141,6 +142,7 @@ const HomeScreen = () => {
           title={"Currency"}
         />
       </View>
+      <BannerAd />
     </View>
   );
 };

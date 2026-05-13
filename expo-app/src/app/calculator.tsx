@@ -1,6 +1,7 @@
 import { getGoldPriceQueryFn } from "@/api/goldApi";
 import ErrorScreen from "@/components/ErrorScreen";
 import ModalButtonAndOptions from "@/components/Modals/ModalButtonAndOptions";
+import BannerAd from "@/components/Views/ads/BannerAd";
 import { CurrencyOptions } from "@/options/CurrencyOptions";
 import { KaratOptions, KaratOptionsEnum } from "@/options/KaratOptions";
 import { WeightOptions } from "@/options/WeightOptions";
@@ -138,6 +139,7 @@ const Upgrade = () => {
           Price: {getPriceText({ karat: parseInt(selectedKarat), multiplier })}
         </Text>
       </View>
+      <BannerAd />
     </View>
   );
 };
