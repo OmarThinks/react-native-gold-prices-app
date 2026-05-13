@@ -3,60 +3,70 @@ import { setThemeMode } from "@/redux/slices/themeSlice/themeSlice";
 import { useAppDispatch } from "@/redux/store";
 import { StorageKeysEnum } from "@/storage/StorageKeysEnum";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect, useState } from "react";
+import { useEffect, useEffectEvent, useState } from "react";
 
 const useIsAppInitialized = () => {
-  const [isThemeInitialized, setIsThemeInitialized] = useState(false);
-  const [isAuthInitialized, setIsAuthInitialized] = useState(true);
+  const [isAsyncStorageInitialized, setIsAsyncStorageInitialized] =
+    useState(false);
 
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    const initializeAuth = () => {
-      //console.log("initializing auth...");
-      AsyncStorage.getItem(StorageKeysEnum.USER)
-        .then((storedUser) => {
-          if (storedUser) {
-            dispatch(setUser(JSON.parse(storedUser)));
-          } else {
-            dispatch(setUser(null));
+  const initializeAsyncStorage = useEffectEvent(async () => {
+    AsyncStorage.multiGet([
+      StorageKeysEnum.CURRENCY,
+      StorageKeysEnum.THEME_MODE,
+      StorageKeysEnum.USER,
+      StorageKeysEnum.WEIGHT,
+    ])
+      .then((keyValuePair) => {
+        for (const [key, value] of keyValuePair) {
+          console.log(key, value);
+
+          switch (key) {
+            case StorageKeysEnum.THEME_MODE:
+              dispatch(setThemeMode({ mode: getThemeMode(value) }));
+              break;
+            case StorageKeysEnum.USER:
+              dispatch(setUser(getUserData(value)));
+
+            default:
+              break;
           }
-        })
-        .catch((error) => {
-          console.error("Error initializing auth:", error);
-          dispatch(setUser(null));
-        })
-        .finally(() => {
-          setIsAuthInitialized(true);
-        });
-    };
-    initializeAuth();
-  }, []);
+        }
+      })
+      .catch(() => {})
+      .finally(() => {
+        setIsAsyncStorageInitialized(true);
+      });
+  });
 
   useEffect(() => {
-    const initializeTheme = async () => {
-      //console.log("initializing theme...");
-      const storedThemeMode = await AsyncStorage.getItem(
-        StorageKeysEnum.THEME_MODE,
-      );
-
-      if (storedThemeMode === "light") {
-        dispatch(setThemeMode({ mode: "light" }));
-      } else if (storedThemeMode === "dark") {
-        dispatch(setThemeMode({ mode: "dark" }));
-      } else {
-        dispatch(setThemeMode({ mode: "dark" }));
-      }
-
-      setIsThemeInitialized(true);
-    };
-
-    initializeTheme();
+    initializeAsyncStorage();
   }, []);
 
-  const isAppInitialized = isThemeInitialized && isAuthInitialized;
+  const isAppInitialized = isAsyncStorageInitialized;
 
   return isAppInitialized;
+};
+
+const getThemeMode = (storedValue: string | null): "light" | "dark" => {
+  if (storedValue === "light") {
+    return "light";
+  } else {
+    return "dark";
+  }
+};
+
+const getUserData = (storedValue: string | null): object | null => {
+  if (typeof storedValue === "string") {
+    try {
+      return JSON.parse(storedValue);
+    } catch (error) {
+      console.error("Error initializing auth:", error);
+    }
+  }
+
+  return null;
 };
 
 export { useIsAppInitialized };
