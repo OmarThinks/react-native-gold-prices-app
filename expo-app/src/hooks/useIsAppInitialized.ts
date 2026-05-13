@@ -1,4 +1,10 @@
+import { CurrencyOptionsEnum } from "@/options/CurrencyOptions";
+import { WeightOptionsEnum } from "@/options/WeightOptions";
 import { setUser } from "@/redux/slices/auth/authSlice";
+import {
+  setCurrency,
+  setWeightUnit,
+} from "@/redux/slices/goldSelectionsSlice/goldSelectionsSlice";
 import { setThemeMode } from "@/redux/slices/themeSlice/themeSlice";
 import { useAppDispatch } from "@/redux/store";
 import { StorageKeysEnum } from "@/storage/StorageKeysEnum";
@@ -28,13 +34,30 @@ const useIsAppInitialized = () => {
               break;
             case StorageKeysEnum.USER:
               dispatch(setUser(getUserData(value)));
+              break;
+            case StorageKeysEnum.CURRENCY:
+              dispatch(
+                setCurrency({
+                  newSelectedCurrencyKey: getStoredCurrency(value),
+                }),
+              );
+              break;
+            case StorageKeysEnum.WEIGHT:
+              dispatch(
+                setWeightUnit({
+                  newSelectedWeightKey: getStoredWeight(value),
+                }),
+              );
+              break;
 
             default:
               break;
           }
         }
       })
-      .catch(() => {})
+      .catch((error) => {
+        console.log("Something went wrong on initialization", error);
+      })
       .finally(() => {
         setIsAsyncStorageInitialized(true);
       });
@@ -67,6 +90,36 @@ const getUserData = (storedValue: string | null): object | null => {
   }
 
   return null;
+};
+
+const getStoredCurrency = (storedValue: string | null): CurrencyOptionsEnum => {
+  if (storedValue === null) {
+    return CurrencyOptionsEnum.USD;
+  }
+
+  for (const key in CurrencyOptionsEnum) {
+    const value = CurrencyOptionsEnum[key as keyof typeof CurrencyOptionsEnum];
+    if (storedValue === value) {
+      return value;
+    }
+  }
+
+  return CurrencyOptionsEnum.USD;
+};
+
+const getStoredWeight = (storedValue: string | null): WeightOptionsEnum => {
+  if (storedValue === null) {
+    return WeightOptionsEnum.Gram;
+  }
+
+  for (const key in WeightOptionsEnum) {
+    const value = WeightOptionsEnum[key as keyof typeof WeightOptionsEnum];
+    if (storedValue === value) {
+      return value;
+    }
+  }
+
+  return WeightOptionsEnum.Gram;
 };
 
 export { useIsAppInitialized };
