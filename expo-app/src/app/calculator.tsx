@@ -2,6 +2,7 @@ import { getGoldPriceQueryFn } from "@/api/goldApi";
 import ErrorScreen from "@/components/ErrorScreen";
 import ModalButtonAndOptions from "@/components/Modals/ModalButtonAndOptions";
 import { CurrencyOptions } from "@/options/CurrencyOptions";
+import { KaratOptions, KaratOptionsEnum } from "@/options/KaratOptions";
 import { WeightOptions } from "@/options/WeightOptions";
 import {
   useSelectedCurrencyKey,
@@ -10,7 +11,7 @@ import {
 import { useColors } from "@/redux/slices/themeSlice/colorsHooks";
 import { getWeightConversionFactor } from "@/utils/weightUnitsConversion";
 import { useQuery } from "@tanstack/react-query";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { RefreshControl } from "react-native-gesture-handler";
 
@@ -20,6 +21,7 @@ const Upgrade = () => {
   const { selectedCurrencyKey, setSelectedCurrencyKey } =
     useSelectedCurrencyKey();
   const { selectedWeightKey, setSelectedWeightKey } = useSelectedWeightKey();
+  const [selectedKarat, setSelectedKarat] = useState(KaratOptionsEnum.K_24);
 
   const { data, status, error, isLoading, isFetching, refetch } = useQuery({
     queryFn: () => getGoldPriceQueryFn({ currencyKey: selectedCurrencyKey }),
@@ -91,6 +93,13 @@ const Upgrade = () => {
             setSelectedKey={setSelectedCurrencyKey}
             title={"Currency"}
           />
+          <ModalButtonAndOptions
+            displayName={selectedKarat}
+            options={KaratOptions}
+            selectedKey={selectedKarat}
+            setSelectedKey={setSelectedKarat}
+            title={"Karat"}
+          />
         </View>
       </ScrollView>
       <View
@@ -98,10 +107,10 @@ const Upgrade = () => {
         style={{ borderTopWidth: 4, borderColor: colors.text }}
       >
         <Text
-          className=" self-stretch text-center"
+          className=" self-stretch text-center p-4"
           style={{ color: colors.text, fontSize: 40 }}
         >
-          Price: {getPriceText({ karat: 24 })}
+          Price: {getPriceText({ karat: parseInt(selectedKarat) })}
         </Text>
       </View>
     </View>
