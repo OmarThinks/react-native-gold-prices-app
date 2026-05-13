@@ -10,7 +10,7 @@ const Upgrade = () => {
       className=" self-stretch flex-1 justify-center items-center"
       style={{ backgroundColor: colors.background }}
     >
-      <Text style={{ color: colors.text }}>Upgrade</Text>
+      <Text style={{ color: colors.text }}>Calculator</Text>
     </View>
   );
 };

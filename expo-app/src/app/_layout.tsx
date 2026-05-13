@@ -79,9 +79,9 @@ function AppInsideRedux() {
               <NativeTabs.Trigger.Icon sf="house.fill" md="home" />
             </NativeTabs.Trigger>
 
-            <NativeTabs.Trigger name="upgrade">
-              <NativeTabs.Trigger.Label>Upgrade</NativeTabs.Trigger.Label>
-              <NativeTabs.Trigger.Icon sf="arrow.up" md="arrow_upward" />
+            <NativeTabs.Trigger name="calculator">
+              <NativeTabs.Trigger.Label>Calculator</NativeTabs.Trigger.Label>
+              <NativeTabs.Trigger.Icon sf="plus" md="calculate" />
             </NativeTabs.Trigger>
 
             <NativeTabs.Trigger name="settings">
