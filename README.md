@@ -1,5 +1,15 @@
 # React Native Gold Prices App:
 
+## 1) Features:
+
+- Displaying gold prices
+- Calculator
+- Ads
+- Dark and light theme
+- Prepared for auth
+
+## 2) Screenshots:
+
 <img src="./media/images/01.png" width=300 />
 
 <img src="./media/images/02.png" width=300 />
