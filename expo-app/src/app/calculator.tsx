@@ -2,6 +2,7 @@ import { getGoldPriceQueryFn } from "@/api/goldApi";
 import ErrorScreen from "@/components/ErrorScreen";
 import ModalButtonAndOptions from "@/components/Modals/ModalButtonAndOptions";
 import BannerAd from "@/components/Views/ads/BannerAd";
+import { Header } from "@/components/Views/Header/Header";
 import { CurrencyOptions } from "@/options/CurrencyOptions";
 import { KaratOptions, KaratOptionsEnum } from "@/options/KaratOptions";
 import { WeightOptions } from "@/options/WeightOptions";
@@ -68,6 +69,7 @@ const Upgrade = () => {
       className=" self-stretch flex-1"
       style={{ backgroundColor: colors.background }}
     >
+      <Header title="Calculator" shouldHideBackButton shouldHideSettings />
       <ScrollView
         className=" self-stretch flex-1"
         contentContainerClassName=" px-3 py-4"
@@ -75,9 +77,6 @@ const Upgrade = () => {
           <RefreshControl refreshing={isFetching} onRefresh={refetch} />
         }
       >
-        <Text style={{ color: colors.text, fontSize: 40, fontWeight: "bold" }}>
-          Calculator
-        </Text>
         <View className=" h-4" />
         <View className=" self-stretch gap-4">
           <TextInput

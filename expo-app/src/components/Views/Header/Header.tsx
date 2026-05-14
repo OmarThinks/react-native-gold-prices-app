@@ -41,8 +41,8 @@ function Header({
       )}
 
       <Text
-        style={{ color: colors.text }}
-        className="flex-1 text-[24px] font-bold"
+        style={{ color: colors.text, fontSize: 32, fontWeight: "800" }}
+        className="flex-1"
       >
         {title}
       </Text>
