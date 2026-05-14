@@ -10,9 +10,10 @@ import {
   useSelectedWeightKey,
 } from "@/redux/slices/goldSelectionsSlice/goldSelectionHooks";
 import { useColors } from "@/redux/slices/themeSlice/colorsHooks";
+import { getPriceText } from "@/utils/getPriceText";
 import { getWeightConversionFactor } from "@/utils/weightUnitsConversion";
 import { useQuery } from "@tanstack/react-query";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { ScrollView, Text, TextInput, View } from "react-native";
 import { RefreshControl } from "react-native-gesture-handler";
 
@@ -41,16 +42,6 @@ const Upgrade = () => {
       return 1;
     }
   }, [amount]);
-
-  const getPriceText = useCallback(
-    ({ karat, multiplier = 1 }: { karat: number; multiplier?: number }) => {
-      return (
-        (data?.currencySymbol ?? "") +
-        ((fullPrice * karat * multiplier) / 24).toFixed(2).toString()
-      );
-    },
-    [data?.currencySymbol, fullPrice],
-  );
 
   const weightUnitName = useMemo(() => {
     return WeightOptions.find((item) => item.id === selectedWeightKey)
@@ -136,7 +127,14 @@ const Upgrade = () => {
           className=" self-stretch text-center p-4"
           style={{ color: colors.text, fontSize: 40 }}
         >
-          Price: {getPriceText({ karat: parseInt(selectedKarat), multiplier })}
+          Price:{" "}
+          {getPriceText({
+            karat: parseInt(selectedKarat),
+            multiplier,
+            currencySymbol: data?.currencySymbol ?? "",
+            price: data?.price ?? 0,
+            selectedWeightKey,
+          })}
         </Text>
       </View>
       <BannerAd />

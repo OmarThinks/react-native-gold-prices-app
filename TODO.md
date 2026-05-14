@@ -11,4 +11,4 @@
 - The request should be from Backend
 - backend: cache every 5 minutes
 - crop app icon ✅
-- number formatting (from the AI Therapist project)
+- number formatting (from the AI Therapist project) ✅
