@@ -54,7 +54,6 @@ function AppInsideRedux() {
       <SafeAreaView
         style={{ backgroundColor: colors.background }}
         className=" self-stretch flex-1 justify-center items-center px-6"
-        edges={["top", "right", "left"]}
       >
         <StatusBar style={themeMode === "dark" ? "light" : "dark"} />
 
