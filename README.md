@@ -1,5 +1,7 @@
 # React Native Gold Prices App:
 
+- YouTube: https://www.youtube.com/watch?v=dN7sHb-_tsc
+
 ## 1) Features:
 
 - Displaying gold prices
